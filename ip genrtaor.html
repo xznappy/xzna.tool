@@ -1,0 +1,106 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random IP Generator</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #0d0d0d;
+            color: #e0e0ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #1a1a2e;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            max-width: 400px;
+        }
+
+        #random-ip {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #4da6ff;
+            font-weight: bold;
+        }
+
+        button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #333, #1a1a2e);
+            color: #4da6ff;
+            border: 2px solid #4da6ff;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #4da6ff;
+            color: #fff;
+        }
+
+        .back-btn {
+            margin-top: 20px;
+            background: linear-gradient(135deg, #333, #1a1a2e); 
+            color: #ff4da6; 
+            border: 2px solid #ff4da6; 
+            font-size: 16px;
+            border-radius: 8px;
+            padding: 10px 20px;
+            display: inline-block;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #ff4da6; 
+            color: #fff; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="random-ip">Click to generate an IP</div>
+        <button onclick="generateRandomIP()">Generate Random IP</button>
+        <button onclick="copyIP()">Copy IP</button>
+        <!-- Back Button -->
+        <a href="file:///C:/Users/xznap/xzna.html" class="back-btn">Back</a>
+    </div>
+
+    <script>
+        // Generates a random IP address
+        function generateRandomIP() {
+            const randomIP = `${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`;
+            document.getElementById("random-ip").textContent = randomIP;
+        }
+
+        // Copies the IP address to the clipboard
+        function copyIP() {
+            const ipText = document.getElementById("random-ip").textContent;
+            navigator.clipboard.writeText(ipText).then(() => {
+                alert("IP Address copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy IP address: ", err);
+            });
+        }
+    </script>
+</body>
+</html>

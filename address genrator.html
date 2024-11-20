@@ -1,0 +1,121 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Address Generator</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #0d0d0d;
+            color: #e0e0ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #1a1a2e;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            max-width: 400px;
+        }
+
+        #random-address {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #4da6ff;
+            font-weight: bold;
+            display: none; /* Initially hidden */
+        }
+
+        button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #333, #1a1a2e);
+            color: #4da6ff;
+            border: 2px solid #4da6ff;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #4da6ff;
+            color: #fff;
+        }
+
+        #backButton {
+            background: linear-gradient(135deg, #333, #1a1a2e); /* Dark gradient */
+            color: #ff4da6; /* Pink color */
+            border: 2px solid #ff4da6; /* Pink border */
+            font-size: 16px; /* Same as other buttons */
+            border-radius: 8px;
+            padding: 10px 20px; /* Same as other buttons */
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        #backButton:hover {
+            background: #ff4da6; /* Pink on hover */
+            color: #fff; /* White text */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="random-address"></div> <!-- Initially empty -->
+        <button onclick="generateRandomAddress()">Generate Random Address</button>
+        <button onclick="copyAddress()">Copy Address</button>
+        
+        <!-- Back Button now explicitly points to the desired file -->
+        <a href="file:///C:/Users/xznap/xzna.html" id="backButton">Back</a>
+    </div>
+
+    <script>
+        function generateRandomAddress() {
+            const streets = ["Main St", "Elm St", "Oak St", "Pine St", "Maple Ave", "Sunset Blvd"];
+            const cities = ["Springfield", "Riverdale", "Madison", "Greenville", "Clinton"];
+            const states = ["CA", "TX", "NY", "FL", "IL", "OH"];
+            const randomStreet = `${Math.floor(Math.random() * 9999)} ${streets[Math.floor(Math.random() * streets.length)]}`;
+            const randomCity = cities[Math.floor(Math.random() * cities.length)];
+            const randomState = states[Math.floor(Math.random() * states.length)];
+            const randomZip = Math.floor(Math.random() * 90000) + 10000; 
+            const randomAddress = `${randomStreet}, ${randomCity}, ${randomState} ${randomZip}`;
+            
+            const addressElement = document.getElementById("random-address");
+            addressElement.textContent = randomAddress;
+            addressElement.style.display = "block"; // Show the address once generated
+        }
+
+        function copyAddress() {
+            const addressText = document.getElementById("random-address").textContent;
+            if (addressText === "") {
+                alert("No address to copy. Generate one first!");
+                return;
+            }
+            navigator.clipboard.writeText(addressText).then(() => {
+                alert("Address copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy address: ", err);
+            });
+        }
+    </script>
+</body>
+</html>

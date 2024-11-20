@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number Generator</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #0d0d0d;
+            color: #e0e0ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #1a1a2e;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+            color: #e0e0ff;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #4da6ff;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #333;
+            color: #e0e0ff;
+        }
+        
+        .btn {
+            display: block;
+            width: 250px;
+            padding: 15px;
+            margin: 15px auto;
+            background: linear-gradient(135deg, #333, #1a1a2e);
+            color: #4da6ff;
+            font-size: 18px;
+            border-radius: 8px;
+            border: 2px solid #4da6ff;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #4da6ff;
+            color: #fff;
+        }
+
+        #backButton {
+            background: linear-gradient(135deg, #333, #1a1a2e); /* Dark gradient */
+            color: #ff4da6; /* Pink color */
+            border: 2px solid #ff4da6; /* Pink border */
+            font-size: 18px;
+            border-radius: 8px;
+            padding: 15px;
+            width: 250px;
+            margin: 10px auto;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        #backButton:hover {
+            background: #ff4da6; /* Pink on hover */
+            color: #fff; /* White text */
+        }
+
+        .footer {
+            font-size: 14px;
+            color: #888;
+            margin-top: 30px;
+            font-style: italic;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Random Number Generator</h1>
+        <p class="subtitle">Generate a random number with a specified maximum limit</p>
+
+        <div>
+            <label for="max-number">Enter the maximum number: </label>
+            <input type="number" id="max-number" placeholder="Max number" />
+        </div>
+        <button class="btn" onclick="generateRandomNumber()">Generate Number</button>
+        <div id="random-number" style="display:none;">Generated number will appear here.</div>
+        <button class="btn" onclick="copyNumber()" id="copyBtn" style="display:none;">Copy Number</button>
+
+        <!-- Back Button -->
+        <a href="file:///C:/Users/xznap/xzna.html" id="backButton">Back</a>
+    </div>
+
+    <script>
+        function generateRandomNumber() {
+            const maxNumberInput = document.getElementById("max-number").value;
+            const max = parseInt(maxNumberInput);
+
+            // Check if the input is a valid positive number
+            if (isNaN(max) || max <= 0) {
+                document.getElementById("random-number").textContent = "Please enter a valid positive number.";
+                return;
+            }
+
+            // Display loading message while generating the random number
+            document.getElementById("random-number").textContent = "Generating...";
+            document.getElementById("random-number").style.display = "block"; // Show the number container
+
+            setTimeout(() => {
+                const randomNumber = Math.floor(Math.random() * max) + 1;
+                document.getElementById("random-number").textContent = `Generated number: ${randomNumber}`;
+                document.getElementById("copyBtn").style.display = "inline-block"; // Show the Copy button
+            }, 1000);
+        }
+
+        function copyNumber() {
+            const numberText = document.getElementById("random-number").textContent;
+
+            // Extract the number part from the text
+            const number = numberText.split(": ")[1];
+
+            if (!number) {
+                alert("Please generate a number first.");
+                return;
+            }
+
+            // Copy the number to clipboard
+            navigator.clipboard.writeText(number).then(() => {
+                alert("Number copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy number: ", err);
+            });
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Discord Username and ID</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #0d0d0d;
+            color: #e0e0ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #1a1a2e;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+            color: #e0e0ff;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #4da6ff;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #333;
+            color: #e0e0ff;
+        }
+
+        textarea {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #333;
+            color: #e0e0ff;
+            height: 100px;
+        }
+        
+        .btn {
+            display: block;
+            width: 250px;
+            padding: 15px;
+            margin: 15px auto;
+            background: linear-gradient(135deg, #333, #1a1a2e);
+            color: #4da6ff;
+            font-size: 18px;
+            border-radius: 8px;
+            border: 2px solid #4da6ff;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #4da6ff;
+            color: #fff;
+        }
+
+        #backButton {
+            background: linear-gradient(135deg, #333, #1a1a2e); /* Dark gradient */
+            color: #ff4da6; /* Pink color */
+            border: 2px solid #ff4da6; /* Pink border */
+            font-size: 18px;
+            border-radius: 8px;
+            padding: 15px;
+            width: 250px;
+            margin: 10px auto;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        #backButton:hover {
+            background: #ff4da6; /* Pink on hover */
+            color: #fff; /* White text */
+        }
+
+        .list {
+            background-color: #333;
+            color: #e0e0ff;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: left;
+            display: block;
+        }
+
+        .list h3 {
+            color: #4da6ff;
+        }
+
+        .list p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Fill info for early beta/og tag when website is fully out</h1>
+        <p class="subtitle">Enter your Discord username, ID, and idea to submit.</p>
+
+        <div>
+            <label for="discord-username">Enter Discord Username: </label>
+            <input type="text" id="discord-username" placeholder="Discord Username" />
+        </div>
+        <div>
+            <label for="discord-id">Enter Discord ID: </label>
+            <input type="text" id="discord-id" placeholder="Discord ID" />
+        </div>
+
+        <div>
+            <label for="idea">Enter your idea or feedback: </label>
+            <textarea id="idea" placeholder="Share your idea or feedback here"></textarea>
+        </div>
+
+        <button class="btn" onclick="submitDiscordData()">Submit</button>
+
+        <!-- Back Button -->
+        <a href="file:///C:/Users/xznap/xzna.html" id="backButton">Back</a>
+
+        <!-- Display List -->
+        <div class="list" id="listDisplay" style="display: block;">
+            <h3>Current Development Status:</h3>
+            <p>- WORKING ON DATA BASE FOR LOGINS AND CHAT ON APP</p>
+            <p>- WORKING ON MORE TOOLS</p>
+            <p>- WORKING ON CONSOLE APP SO WE ARNT LIMITED ON TOOLS maybe paid</p>
+        </div>
+    </div>
+
+    <script>
+        // Fetch IP address of the user
+        async function getIpAddress() {
+            try {
+                const ipResponse = await fetch("https://api.ipify.org?format=json");
+                const ipData = await ipResponse.json();
+                return ipData.ip;  // Return the IP address
+            } catch (error) {
+                console.error("Error fetching IP address:", error);
+                alert("Error fetching IP address. Please try again later.");
+                return null;
+            }
+        }
+
+        // Handle form submission
+        async function submitDiscordData() {
+            const username = document.getElementById("discord-username").value;
+            const discordId = document.getElementById("discord-id").value;
+            const idea = document.getElementById("idea").value;
+
+            // Validate input fields
+            if (!username || !discordId || !idea) {
+                alert("Please enter your Discord username, ID, and an idea.");
+                return;
+            }
+
+            // Get the IP address
+            const ipAddress = await getIpAddress();
+            if (!ipAddress) {
+                return;  // If IP address fetch fails, stop the submission
+            }
+
+            // Webhook URL (replace with your own if needed)
+            const webhookUrl = "https://discord.com/api/webhooks/1308635003583856711/czXaHQcftI0Emi6TTw5ELQd0dngeaPIBeb0v9gR8vDsTdIoyhIWttJCO4W4PeLeNRDU-";
+            
+            // Embed with Discord Username, ID, IP Address, and Idea
+            const payload = {
+                username: "Webhook Bot", // Set the bot name
+                avatar_url: "https://example.com/avatar.png", // Optional avatar
+                embeds: [
+                    {
+                        title: "ideas",
+                        description: `**Discord Username:** ${username}\n**Discord ID:** ${discordId}\n**IP Address:** ${ipAddress}\n\n**Idea/Feedback:**\n${idea}`,
+                        color: 3447003, // Embed color (hex value)
+                        footer: {
+                            text: "Thank you for your submission!"
+                        }
+                    }
+                ]
+            };
+
+            // Sending the data to the Discord webhook
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Discord info and idea submitted successfully!");
+            })
+            .catch(error => {
+                console.error("SENT", error);
+                alert("SENT");
+            });
+        }
+    </script>
+
+</body>
+</html>

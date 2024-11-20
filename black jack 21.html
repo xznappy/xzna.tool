@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Number Generator</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #0d0d0d;
+            color: #e0e0ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #1a1a2e;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+            color: #e0e0ff;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #4da6ff;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .phone-number {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #4da6ff;
+        }
+
+        .btn {
+            display: block;
+            width: 250px;
+            padding: 15px;
+            margin: 15px auto;
+            background: linear-gradient(135deg, #333, #1a1a2e);
+            color: #4da6ff;
+            font-size: 18px;
+            border-radius: 8px;
+            border: 2px solid #4da6ff;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #4da6ff;
+            color: #fff;
+        }
+
+        #backButton {
+            background: linear-gradient(135deg, #333, #1a1a2e);
+            color: #ff4da6; /* Pink */
+            border: 2px solid #ff4da6;
+            font-size: 18px;
+            border-radius: 8px;
+            padding: 15px;
+            width: 250px;
+            margin: 10px auto;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        #backButton:hover {
+            background: #ff4da6;
+            color: #fff;
+        }
+
+        .footer {
+            font-size: 14px;
+            color: #888;
+            margin-top: 30px;
+            font-style: italic;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Phone Number Generator</h1>
+        <p class="subtitle">Generate a random phone number with the typical US format</p>
+
+        <div id="phone-number" class="phone-number">Phone number will appear here.</div>
+        <button class="btn" onclick="generatePhoneNumber()">Generate Phone Number</button>
+        <button class="btn" onclick="copyPhoneNumber()" id="copyBtn" style="display:none;">Copy Number</button>
+
+        <!-- Back Button -->
+        <a href="file:///C:/Users/xznap/xzna.html" id="backButton">Back</a>
+    </div>
+
+    <script>
+        function generatePhoneNumber() {
+            // Generate random area code (555 is a placeholder for a real area code)
+            const areaCode = Math.floor(Math.random() * 900) + 100;
+            
+            // Generate random phone number parts
+            const firstPart = Math.floor(Math.random() * 900) + 100;
+            const secondPart = Math.floor(Math.random() * 9000) + 1000;
+
+            // Format the phone number
+            const phoneNumber = `(${areaCode}) ${firstPart}-${secondPart}`;
+
+            // Display the generated phone number
+            document.getElementById("phone-number").textContent = phoneNumber;
+            document.getElementById("copyBtn").style.display = "inline-block"; // Show the Copy button
+        }
+
+        function copyPhoneNumber() {
+            const phoneNumberText = document.getElementById("phone-number").textContent;
+
+            if (!phoneNumberText) {
+                alert("Please generate a phone number first.");
+                return;
+            }
+
+            // Copy the phone number to clipboard
+            navigator.clipboard.writeText(phoneNumberText).then(() => {
+                alert("Phone number copied to clipboard!");
+            }).catch(err => {
+                console.error("Failed to copy phone number: ", err);
+            });
+        }
+    </script>
+
+</body>
+</html>

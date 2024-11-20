@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain to IP Resolver</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #0d0d0d;
+            color: #e0e0ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #1a1a2e;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+
+        h1 {
+            color: #4da6ff;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 90%;
+            max-width: 600px;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #1a1a2e;
+            color: #e0e0ff;
+            border: 2px solid #4da6ff;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #333, #1a1a2e);
+            color: #4da6ff;
+            font-size: 18px;
+            border-radius: 8px;
+            border: 2px solid #4da6ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #4da6ff;
+            color: #fff;
+        }
+
+        #ipOutput {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #4da6ff;
+        }
+
+        .back-btn {
+            margin-top: 30px;
+            background: linear-gradient(135deg, #333, #1a1a2e);
+            color: #ff4da6;
+            border: 2px solid #ff4da6;
+            font-size: 18px;
+            border-radius: 8px;
+            padding: 15px 30px;
+            display: inline-block;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #ff4da6;
+            color: #fff;
+        }
+    </style>
+    <script>
+        function getDomainIP() {
+            var domain = document.getElementById("domainInput").value.trim();
+
+            if (domain === "") {
+                alert("Please enter a domain.");
+                return;
+            }
+
+            var apiUrl = `https://dns.google/resolve?name=${domain}&type=A`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.Answer) {
+                        var ipAddress = data.Answer[0].data;
+                        document.getElementById("ipOutput").innerText = "IP Address: " + ipAddress;
+                        document.getElementById("copyBtn").style.display = "inline-block";
+                    } else {
+                        document.getElementById("ipOutput").innerText = "IP Address not found.";
+                        document.getElementById("copyBtn").style.display = "none";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching IP:", error);
+                    alert("An error occurred while fetching the IP address.");
+                });
+        }
+
+        function resetForm() {
+            document.getElementById("domainInput").value = '';
+            document.getElementById("ipOutput").innerText = '';
+            document.getElementById("copyBtn").style.display = "none";
+        }
+
+        function copyToClipboard() {
+            var ipText = document.getElementById("ipOutput").innerText;
+            var ip = ipText.replace("IP Address: ", "");
+
+            navigator.clipboard.writeText(ip)
+                .then(() => {
+                    alert("IP Address copied to clipboard!");
+                })
+                .catch(err => {
+                    console.error("Error copying text: ", err);
+                });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Domain to IP Resolver</h1>
+        <p>Enter a domain to get its IP address:</p>
+        <input type="text" id="domainInput" placeholder="Enter domain (e.g., example.com)">
+        <button onclick="getDomainIP()">Get IP Address</button>
+        <button onclick="resetForm()">Enter Another Domain</button>
+        <p id="ipOutput"></p>
+        <button id="copyBtn" style="display: none;" onclick="copyToClipboard()">Copy</button>
+
+        <a href="file:///C:/Users/xznap/xzna.html" class="back-btn">Back</a>
+    </div>
+</body>
+</html>
