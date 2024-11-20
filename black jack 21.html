@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phone Number Generator</title>
     <style>
-        /* Reset and Base Styles */
+       
         * {
             margin: 0;
             padding: 0;
@@ -21,6 +21,7 @@
             justify-content: center;
             min-height: 100vh;
             padding: 20px;
+            animation: fadeIn 1s ease-out;
         }
         
         .container {
@@ -32,6 +33,7 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
             color: #e0e0ff;
             text-align: center;
+            animation: slideUp 1s ease-out;
         }
         
         h1 {
@@ -51,6 +53,8 @@
             font-size: 24px;
             margin-bottom: 20px;
             color: #4da6ff;
+            opacity: 0; /* Hidden initially for fade-in */
+            animation: fadeInText 1s ease-out forwards;
         }
 
         .btn {
@@ -67,11 +71,13 @@
             text-decoration: none;
             transition: all 0.3s ease;
             cursor: pointer;
+            transform: scale(1);
         }
 
         .btn:hover {
             background: #4da6ff;
             color: #fff;
+            transform: scale(1.05);
         }
 
         #backButton {
@@ -102,6 +108,39 @@
             border-top: 1px solid #333;
             padding-top: 20px;
         }
+
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+       
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -115,24 +154,25 @@
         <button class="btn" onclick="copyPhoneNumber()" id="copyBtn" style="display:none;">Copy Number</button>
 
         <!-- Back Button -->
-        <a href="file:///C:/Users/xznap/xzna.html" id="backButton">Back</a>
+        <a href="index.html" id="backButton">Back</a>
     </div>
 
     <script>
         function generatePhoneNumber() {
-            // Generate random area code (555 is a placeholder for a real area code)
+            
             const areaCode = Math.floor(Math.random() * 900) + 100;
             
-            // Generate random phone number parts
+            
             const firstPart = Math.floor(Math.random() * 900) + 100;
             const secondPart = Math.floor(Math.random() * 9000) + 1000;
 
-            // Format the phone number
+         
             const phoneNumber = `(${areaCode}) ${firstPart}-${secondPart}`;
 
             // Display the generated phone number
             document.getElementById("phone-number").textContent = phoneNumber;
             document.getElementById("copyBtn").style.display = "inline-block"; // Show the Copy button
+            document.getElementById("phone-number").style.animation = "fadeInText 1s ease-out forwards"; // Apply fade-in effect
         }
 
         function copyPhoneNumber() {
