@@ -21,6 +21,7 @@
             justify-content: center;
             min-height: 100vh;
             padding: 20px;
+            animation: fadeIn 1s ease;
         }
         
         .container {
@@ -32,12 +33,14 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
             color: #e0e0ff;
             text-align: center;
+            animation: slideUp 1s ease-out;
         }
         
         h1 {
             color: #4da6ff;
             font-size: 36px;
             margin-bottom: 10px;
+            animation: fadeInText 1.2s ease;
         }
 
         .subtitle {
@@ -45,9 +48,10 @@
             color: #ccc;
             margin-bottom: 25px;
             font-style: italic;
+            animation: fadeInText 1.4s ease;
         }
 
-        input {
+        input, textarea {
             padding: 10px;
             font-size: 16px;
             margin: 10px 0;
@@ -57,21 +61,19 @@
             box-sizing: border-box;
             background-color: #333;
             color: #e0e0ff;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #4da6ff;
+            background-color: #444;
+            outline: none;
         }
 
         textarea {
-            padding: 10px;
-            font-size: 16px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: 100%;
-            box-sizing: border-box;
-            background-color: #333;
-            color: #e0e0ff;
             height: 100px;
         }
-        
+
         .btn {
             display: block;
             width: 250px;
@@ -86,11 +88,13 @@
             text-decoration: none;
             transition: all 0.3s ease;
             cursor: pointer;
+            animation: fadeInText 1.5s ease;
         }
 
         .btn:hover {
             background: #4da6ff;
             color: #fff;
+            transform: scale(1.05);
         }
 
         #backButton {
@@ -111,6 +115,7 @@
         #backButton:hover {
             background: #ff4da6; /* Pink on hover */
             color: #fff; /* White text */
+            transform: scale(1.05);
         }
 
         .list {
@@ -121,6 +126,7 @@
             border-radius: 5px;
             text-align: left;
             display: block;
+            animation: fadeInText 1.7s ease;
         }
 
         .list h3 {
@@ -129,6 +135,22 @@
 
         .list p {
             margin: 10px 0;
+        }
+
+        /* Keyframe Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -155,10 +177,10 @@
         <button class="btn" onclick="submitDiscordData()">Submit</button>
 
         <!-- Back Button -->
-        <a href="file:///C:/Users/xznap/xzna.html" id="backButton">Back</a>
+        <a href="index.html" id="backButton">Back</a>
 
         <!-- Display List -->
-        <div class="list" id="listDisplay" style="display: block;">
+        <div class="list" id="listDisplay">
             <h3>Current Development Status:</h3>
             <p>- WORKING ON DATA BASE FOR LOGINS AND CHAT ON APP</p>
             <p>- WORKING ON MORE TOOLS</p>
