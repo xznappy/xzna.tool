@@ -1,11 +1,11 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random Address Generator</title>
     <style>
-        /* Reset and Base Styles */
+        
         * {
             margin: 0;
             padding: 0;
@@ -21,6 +21,7 @@
             justify-content: center;
             min-height: 100vh;
             padding: 20px;
+            animation: fadeIn 1s ease-out;
         }
 
         .container {
@@ -30,6 +31,7 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
             text-align: center;
             max-width: 400px;
+            animation: slideUp 1s ease-out;
         }
 
         #random-address {
@@ -37,7 +39,8 @@
             margin-bottom: 20px;
             color: #4da6ff;
             font-weight: bold;
-            display: none; /* Initially hidden */
+            opacity: 0;
+            animation: fadeInText 1s ease-out 0.5s forwards;
         }
 
         button {
@@ -51,11 +54,13 @@
             border-radius: 8px;
             transition: all 0.3s ease;
             margin: 5px;
+            transform: scale(1);
         }
 
         button:hover {
             background: #4da6ff;
             color: #fff;
+            transform: scale(1.05);
         }
 
         #backButton {
@@ -76,16 +81,47 @@
             background: #ff4da6; /* Pink on hover */
             color: #fff; /* White text */
         }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+       
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div id="random-address"></div> <!-- Initially empty -->
+        <div id="random-address"></div> 
         <button onclick="generateRandomAddress()">Generate Random Address</button>
         <button onclick="copyAddress()">Copy Address</button>
         
-        <!-- Back Button now explicitly points to the desired file -->
-        <a href="file:///C:/Users/xznap/xzna.html" id="backButton">Back</a>
+        
+        <a href="index.html" id="backButton">Back</a>
     </div>
 
     <script>
@@ -101,7 +137,7 @@
             
             const addressElement = document.getElementById("random-address");
             addressElement.textContent = randomAddress;
-            addressElement.style.display = "block"; // Show the address once generated
+            addressElement.style.animation = "fadeInText 1s ease-out forwards";
         }
 
         function copyAddress() {
