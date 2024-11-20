@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -21,6 +21,7 @@
             justify-content: center;
             min-height: 100vh;
             padding: 20px;
+            animation: fadeIn 1s ease-out;
         }
 
         .container {
@@ -30,6 +31,7 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
             text-align: center;
             max-width: 400px;
+            animation: slideUp 1s ease-out;
         }
 
         #random-ip {
@@ -37,6 +39,8 @@
             margin-bottom: 20px;
             color: #4da6ff;
             font-weight: bold;
+            opacity: 0;
+            animation: fadeInText 1s ease-out 0.5s forwards;
         }
 
         button {
@@ -50,11 +54,13 @@
             border-radius: 8px;
             transition: all 0.3s ease;
             margin: 5px;
+            transform: scale(1);
         }
 
         button:hover {
             background: #4da6ff;
             color: #fff;
+            transform: scale(1.05);
         }
 
         .back-btn {
@@ -74,6 +80,38 @@
             background: #ff4da6; 
             color: #fff; 
         }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Slide-up animation */
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Fade-in text animation for random IP */
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -82,7 +120,7 @@
         <button onclick="generateRandomIP()">Generate Random IP</button>
         <button onclick="copyIP()">Copy IP</button>
         <!-- Back Button -->
-        <a href="file:///C:/Users/xznap/xzna.html" class="back-btn">Back</a>
+        <a href="index.html" class="back-btn">Back</a>
     </div>
 
     <script>
@@ -90,6 +128,7 @@
         function generateRandomIP() {
             const randomIP = `${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`;
             document.getElementById("random-ip").textContent = randomIP;
+            document.getElementById("random-ip").style.animation = "fadeInText 1s ease-out forwards";
         }
 
         // Copies the IP address to the clipboard
