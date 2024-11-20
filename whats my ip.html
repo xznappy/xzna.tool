@@ -21,6 +21,7 @@
             justify-content: center;
             min-height: 100vh;
             padding: 20px;
+            animation: fadeIn 1s ease-out;
         }
 
         .container {
@@ -31,18 +32,22 @@
             border-radius: 15px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
             text-align: center;
+            animation: slideUp 1s ease-out;
         }
 
         h1 {
             color: #4da6ff;
             font-size: 32px;
             margin-bottom: 20px;
+            animation: fadeInText 2s ease-out;
         }
 
         p {
             font-size: 18px;
             margin: 20px 0;
             color: #ccc;
+            opacity: 0;
+            animation: fadeInText 1s ease-out 0.5s forwards;
         }
 
         button {
@@ -56,15 +61,29 @@
             border: 2px solid #4da6ff;
             cursor: pointer;
             transition: all 0.3s ease;
+            transform: scale(1);
         }
 
         button:hover {
             background: #4da6ff;
             color: #fff;
+            transform: scale(1.05);
         }
 
         #copyBtn {
             display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4da6ff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #copyBtn:hover {
+            background-color: #3b8ac5;
         }
 
         /* Back Button Custom Style */
@@ -86,6 +105,37 @@
             color: #fff; /* White text */
         }
 
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Slide-up animation */
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Fade-in text animation */
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
     </style>
     <script>
         function getMyIP() {
@@ -94,10 +144,12 @@
                 .then(data => {
                     document.getElementById("ipOutput").innerText = "Your IP Address: " + data.ip;
                     document.getElementById("copyBtn").style.display = "inline-block";
+                    document.getElementById("ipOutput").style.animation = "fadeIn 1s ease-out forwards";
                 })
                 .catch(error => {
                     console.error("Error fetching IP:", error);
                     document.getElementById("ipOutput").innerText = "Failed to get IP address.";
+                    document.getElementById("ipOutput").style.animation = "fadeIn 1s ease-out forwards";
                 });
         }
 
