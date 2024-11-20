@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xzna.tools - Under Development</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #0d0d0d;
+            color: #e0e0ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: #1a1a2e;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            color: #e0e0ff;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            color: #4da6ff;
+            font-size: 48px;
+            margin-bottom: 20px;
+            animation: slideUp 1s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: #ccc;
+            margin-bottom: 30px;
+            font-style: italic;
+            animation: fadeIn 2s ease forwards;
+        }
+
+        .tab-menu {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        .tab-menu button {
+            background: #1a1a2e;
+            color: #4da6ff;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-menu button:hover,
+        .tab-menu button.active {
+            background: #4da6ff;
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeInContent 1s ease forwards;
+        }
+
+        @keyframes fadeInContent {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0; /* Space between buttons */
+            background: linear-gradient(135deg, #333, #1a1a2e);
+            color: #4da6ff;
+            font-size: 18px;
+            border-radius: 8px;
+            border: 2px solid #4da6ff;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #4da6ff;
+            color: #fff;
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(77, 166, 255, 0.5);
+        }
+
+        .footer {
+            font-size: 14px;
+            color: #888;
+            margin-top: 40px;
+            font-style: italic;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            opacity: 0;
+            animation: fadeIn 2s ease forwards;
+            animation-delay: 1.5s;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        .bottom-right-buttons {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        /* Adjust button margins */
+        .bottom-right-buttons .btn {
+            margin: 10px 0;
+            background: linear-gradient(135deg, #333, #1a1a2e);
+            color: #4da6ff;
+            font-size: 18px;
+            border-radius: 8px;
+            border: 2px solid #4da6ff;
+            text-align: center;
+            text-decoration: none;
+            padding: 15px;
+            transition: all 0.3s ease;
+            width: 100%; /* Ensures the buttons have the same width */
+            max-width: 250px; /* Prevent the buttons from stretching too wide */
+        }
+
+        .bottom-right-buttons .btn:hover {
+            background: #4da6ff;
+            color: #fff;
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(77, 166, 255, 0.5);
+        }
+
+        .bottom-right-buttons .animated-btn {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+    </style>
+    <script>
+        function showTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+
+            const tabButtons = document.querySelectorAll('.tab-menu button');
+            tabButtons.forEach(button => button.classList.remove('active'));
+
+            const activeButton = document.querySelector(`button[data-tab="${tabId}"]`);
+            activeButton.classList.add('active');
+        }
+
+        function comingSoon() {
+            alert('Coming Soon');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>xzna.tools</h1>
+        <p class="subtitle"> SUPER EALRY BETA</p>
+
+        <div class="tab-menu">
+            <button onclick="showTab('discord')" data-tab="discord">Discord</button>
+            <button onclick="showTab('ip')" data-tab="ip">IP</button>
+            <button onclick="showTab('generators')" data-tab="generators">Generators</button>
+        </div>
+
+        <div id="discord" class="tab-content">
+            <a href="webhook spam (discord).html" class="btn">Web Hook Spam</a>
+            <button class="btn" onclick="comingSoon()">Raid Tool (Coming Soon)</button>
+            <button class="btn" onclick="comingSoon()">Mass DM (Coming Soon)</button>
+        </div>
+
+        <div id="ip" class="tab-content">
+            <a href="ip lookup.html" class="btn">IP Lookup</a>
+            <a href="whats my ip.html" class="btn">My IP</a>
+        </div>
+
+        <div id="generators" class="tab-content">
+            <a href="ip genrtaor.html" class="btn">IP Generator</a>
+            <a href="address genrator.html" class="btn">Address Generator</a>
+            <a href="name genrators.html" class="btn">Name Generator</a>
+            <a href="number genrator.html" class="btn">Number Generator</a>
+            <a href="black jack 21.html" class="btn">Phone Number Generator</a>
+        </div>
+
+        <div class="footer">credits to @xzn4 and @ykv4 on discord</div>
+    </div>
+
+    <!-- New buttons positioned with animations -->
+    <div class="bottom-right-buttons">
+        <a href="https://discord.gg/4TVP5wGVD9" class="btn animated-btn" target="_blank">Join Discord</a>
+        <a href="webhood beta.html" class="btn animated-btn">Claim Beta Badge</a>
+        <a href="ideas xznatools webhook.html" class="btn">IDEAS</a>
+    </div>
+</body>
+</html>
