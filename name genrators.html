@@ -21,6 +21,7 @@
             justify-content: center;
             min-height: 100vh;
             padding: 20px;
+            animation: fadeIn 1s ease-out;
         }
 
         .container {
@@ -30,6 +31,7 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
             text-align: center;
             max-width: 400px;
+            animation: slideUp 1s ease-out;
         }
 
         #random-name {
@@ -37,7 +39,8 @@
             margin-bottom: 20px;
             color: #4da6ff;
             font-weight: bold;
-            display: none; /* Initially hidden */
+            opacity: 0;
+            animation: fadeInText 1s ease-out 0.5s forwards;
         }
 
         button {
@@ -51,11 +54,13 @@
             border-radius: 8px;
             transition: all 0.3s ease;
             margin: 5px;
+            transform: scale(1);
         }
 
         button:hover {
             background: #4da6ff;
             color: #fff;
+            transform: scale(1.05);
         }
 
         #backButton {
@@ -76,17 +81,49 @@
             background: #ff4da6; /* Pink on hover */
             color: #fff; /* White text */
         }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Slide-up animation */
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Fade-in text animation for random name */
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Random Name Generator</h1>
         <div id="random-name">Click "Regenerate" to get a random name</div> <!-- Initially empty -->
-        <button onclick="generateRandomName()">Regenerate</button>
+        <button onclick="generateRandomName()">Generate</button>
         <button onclick="copyName()">Copy Name</button>
         
         <!-- Back Button -->
-        <a href="file:///C:/Users/xznap/xzna.html" id="backButton">Back</a>
+        <a href="index.html" id="backButton">Back</a>
     </div>
 
     <script>
@@ -103,7 +140,7 @@
             const fullName = `${firstName} ${lastName}`;
             const nameElement = document.getElementById("random-name");
             nameElement.textContent = fullName;
-            nameElement.style.display = "block"; // Show the generated name
+            nameElement.style.animation = "fadeInText 1s ease-out forwards"; // Trigger fade-in for name
         }
 
         function copyName() {
