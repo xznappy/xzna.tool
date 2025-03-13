@@ -1,1 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Discord Webhook Manager - xzna</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: #1c1c3c;
+      padding: 30px 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+      max-width: 420px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      color: #8a8dfc;
+      font-size: 22px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    p {
+      color: #bbb;
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    input[type="text"], input[type="number"], textarea {
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #555;
+      background-color: #333;
+      color: #fff;
+      font-size: 14px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .checkbox-label {
+      font-size: 14px;
+      margin-top: 8px;
+      color: #ccc;
+    }
+
+    .control-group {
+      margin-bottom: 20px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 24px;
+      cursor: pointer;
+    }
+
+    .rate-limit-warning {
+      font-size: 13px;
+      color: #ffcc00;
+      margin-top: 8px;
+      text-align: left;
+    }
+
+    button {
+      padding: 10px 16px;
+      border-radius: 6px;
+      border: none;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .send-btn, .spam-btn, .embed-btn {
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    .send-btn:hover, .spam-btn:hover, .embed-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: #fff;
+    }
+
+    .delete-btn:hover {
+      background-color: #c82333;
+    }
+
+    .embed-color-btn {
+      background-color: #007bff;
+      color: #fff;
+      font-size: 13px;
+      padding: 8px;
+      margin-top: 6px;
+      width: auto;
+      align-self: flex-start;
+    }
+
+    .embed-color-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .embed-color-btn:disabled {
+      background-color: #555;
+      cursor: not-allowed;
+    }
+
+    .back-btn {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .back-btn:hover {
+      background-color: #5a6268;
+    }
+
+    .notification-container {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 9999;
+      max-width: 300px;
+      display: flex;
+      flex-direction: column-reverse;
+    }
+
+    .notification {
+      background-color: #28a745;
+      color: white;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+
+    .notification.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .notification.error {
+      background-color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Discord Webhook Manager</h1>
+    <p>Send messages to a Discord channel via webhook. Customize with embeds, spam, and more!</p>
+
+    <div class="input-group">
+      <label for="webhookURL">Webhook URL</label>
+      <input type="text" id="webhookURL" placeholder="Enter your Discord Webhook URL" required />
+    </div>
+
+    <div class="input-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="Enter your username" required />
+    </div>
+
+    <div class="input-group">
+      <label for="message">Message</label>
+      <textarea id="message" placeholder="Enter your message" rows="4" required></textarea>
+    </div>
+
+    <div class="input-group control-group">
+      <label class="checkbox-label">
+        <input type="checkbox" id="embedCheckbox" /> Enable Embed
+      </label>
+      <button type="button" id="selectEmbedColor" class="embed-color-btn" disabled>Select Embed Color</button>
+    </div>
+
+    <div class="input-group control-group">
+      <label for="spamDelay">Delay between messages (ms)</label>
+      <input type="range" id="spamDelay" min="250" max="1500" value="1000" />
+      <span id="delayValue">1000ms</span>
+      <p class="rate-limit-warning">⚠️ Warning: To much spaming with low Delay discord may rate-limit your ip for few hours⚠️</p>
+    </div>
+
+    <button class="send-btn" onclick="sendWebhook()">Send Message</button>
+    <button class="spam-btn" id="spamButton" onclick="toggleSpam()">Start Spamming</button>
+    <button class="delete-btn" onclick="deleteWebhook()">Delete Webhook</button>
+    <button class="back-btn" onclick="goBack()">Back</button>
+  </div>
+
+  <div class="notification-container" id="notificationContainer"></div>
+
+  <script>
+    let embedColor = "#ff0000";
+    let isSpamming = false;
+    let spamInterval;
+
+    document.getElementById("spamDelay").addEventListener("input", function () {
+      document.getElementById("delayValue").textContent = `${this.value}ms`;
+    });
+
+    function sendWebhook() {
+      const webhookURL = document.getElementById("webhookURL").value;
+      const username = document.getElementById("username").value;
+      const message = document.getElementById("message").value;
+      const embedChecked = document.getElementById("embedCheckbox").checked;
+
+      if (!webhookURL || !username || !message) {
+        showNotification("Please fill in all fields!", true);
+        return;
+      }
+
+      const payload = embedChecked
+        ? {
+            username: username,
+            embeds: [
+              {
+                title: "",
+                description: message,
+                color: parseInt(embedColor.replace("#", ""), 16),
+              },
+            ],
+          }
+        : {
+            username: username,
+            content: message,
+          };
+
+      fetch(webhookURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+        .then((response) => {
+          if (response.ok) {
+            showNotification("Message sent successfully!", false);
+          } else if (response.status === 429) {
+            showNotification("Rate-limited! Please wait...", true);
+          } else {
+            showNotification("Error sending message.", true);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          showNotification("An error occurred.", true);
+        });
+    }
+
+    function toggleSpam() {
+      const webhookURL = document.getElementById("webhookURL").value;
+      const username = document.getElementById("username").value;
+      const message = document.getElementById("message").value;
+      const spamDelay = parseInt(document.getElementById("spamDelay").value) || 1000;
+
+      if (!webhookURL || !username || !message) {
+        showNotification("Please fill in all fields!", true);
+        return;
+      }
+
+      if (!isSpamming) {
+        document.getElementById("spamButton").textContent = "Stop Spamming";
+        isSpamming = true;
+        spamInterval = setInterval(() => {
+          sendWebhook();
+        }, spamDelay);
+      } else {
+        document.getElementById("spamButton").textContent = "Start Spamming";
+        isSpamming = false;
+        clearInterval(spamInterval);
+      }
+    }
+
+    function deleteWebhook() {
+      const webhookURL = document.getElementById("webhookURL").value;
+      if (!webhookURL) {
+        showNotification("Please provide a webhook URL first!", true);
+        return;
+      }
+
+      const urlParts = webhookURL.split("/");
+      const webhookId = urlParts[urlParts.length - 2];
+      const webhookToken = urlParts[urlParts.length - 1];
+
+      fetch(`https://discord.com/api/webhooks/${webhookId}/${webhookToken}`, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (response.ok) {
+            showNotification("Webhook deleted successfully!", false);
+          } else {
+            showNotification("Failed to delete webhook.", true);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          showNotification("An error occurred while deleting the webhook.", true);
+        });
+    }
+
+    function showNotification(message, isError) {
+      const container = document.getElementById("notificationContainer");
+      const note = document.createElement("div");
+      note.classList.add("notification");
+      if (isError) note.classList.add("error");
+      note.textContent = message;
+      container.appendChild(note);
+
+      setTimeout(() => {
+        note.classList.add("show");
+      }, 10);
+
+      setTimeout(() => {
+        note.classList.remove("show");
+        setTimeout(() => container.removeChild(note), 500);
+      }, 5000);
+    }
+
+    document.getElementById("embedCheckbox").addEventListener("change", function () {
+      document.getElementById("selectEmbedColor").disabled = !this.checked;
+    });
+
+    document.getElementById("selectEmbedColor").addEventListener("click", function () {
+      const colorPicker = document.createElement("input");
+      colorPicker.type = "color";
+      colorPicker.value = embedColor;
+
+      colorPicker.addEventListener("input", function () {
+        embedColor = colorPicker.value;
+      });
+
+      colorPicker.click();
+    });
+
+    function goBack() {
+      window.location.href = "xznahomepage.html";
+    }
+  </script>
+</body>
+</html>
 
