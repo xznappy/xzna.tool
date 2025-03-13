@@ -1,1 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IP Lookup - xzna</title>
+  <style>
+    body {
+      background-color: #0a0a0a;
+      color: #b0b3b8;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      background-color: #14142b;
+      margin: 50px auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+    }
+    h1 {
+      color: #8a8dfc;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 80%;
+      border-radius: 5px;
+      border: none;
+      margin-bottom: 20px;
+      background-color: #1c1c3c;
+      color: #fff;
+    }
+    button {
+      background-color: #4a90e2;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #367ac9;
+    }
+    .result {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .result div {
+      background-color: #2a2a5c;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 5px 0;
+    }
+    .back-link {
+      margin-top: 30px;
+      display: inline-block;
+      color: #4a90e2;
+      text-decoration: none;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>IP Lookup</h1>
+    <input type="text" id="ipInput" placeholder="Enter IP address..." />
+    <br/>
+    <button onclick="lookupIP()">Lookup</button>
 
+    <div id="result" class="result"></div>
+
+    <a class="back-link" href="xznahomepage.html">&larr; Back to Home</a>
+  </div>
+
+  <script>
+    async function lookupIP() {
+      const ip = document.getElementById('ipInput').value.trim();
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = 'Loading...';
+
+      if (!ip) {
+        resultDiv.innerHTML = 'Please enter a valid IP address.';
+        return;
+      }
+
+      try {
+        const apiKey = 'Mjc0NjU6cGYwMnluV1YwOEhucFVlNldySkF4NFBuNlZOdkJSbUs='; // Replace with your IPHub API key
+        const res = await fetch(`https://v2.api.iphub.info/ip/${ip}`, {
+          headers: {
+            'X-Key': apiKey
+          }
+        });
+        const data = await res.json();
+
+        if (data.block === 1) {
+          resultDiv.innerHTML = `
+            <div><strong>IP:</strong> ${data.ip}</div>
+            <div><strong>Country:</strong> ${data.countryName}</div>
+            <div><strong>ISP:</strong> ${data.isp}</div>
+            <div><strong>Proxy/VPN:</strong> Yes</div>
+          `;
+        } else {
+          resultDiv.innerHTML = `
+            <div><strong>IP:</strong> ${data.ip}</div>
+            <div><strong>Country:</strong> ${data.countryName}</div>
+            <div><strong>ISP:</strong> ${data.isp}</div>
+            <div><strong>Proxy/VPN:</strong> No</div>
+          `;
+        }
+      } catch (error) {
+        resultDiv.innerHTML = 'Something went wrong. Try again later.';
+      }
+    }
+  </script>
+</body>
+</html>
